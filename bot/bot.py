@@ -3,7 +3,7 @@ from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
 from vk_api.utils import get_random_id
 
 from env import get_vk_token, get_bot_group_id, get_admin_id
-from title import get_true_group_title
+from bot.title import get_true_group_title
 
 token = get_vk_token()
 group_id = get_bot_group_id()

@@ -31,7 +31,7 @@ def get_mutual_friends(source_uid, target_uid):
     return vk.friends.getMutual(source_uid=source_uid, target_uid=target_uid)
 
 
-def make_graph(user_id):
+def get_user_graph(user_id):
     graph = {}
     friends = get_friends(user_id)['items']
     friends_non_private = copy(friends)
@@ -46,4 +46,4 @@ def make_graph(user_id):
     for friend_id in friends_non_private:
         labels[friend_id] = get_user_name(friend_id)
 
-    return graph, friends_non_private, labels
+    return graph, labels
