@@ -11,13 +11,13 @@ def make_graph(graph):
         g.add_node(i)
 
     friends = tuple(graph.keys())
-    print(friends)
 
     for (i, j) in itertools.combinations(range(len(graph.keys())), 2):
         i = friends[i]
         j = friends[j]
         if i in graph[j]:
-            g.add_edge(i, j)
+            w = len(list(set(graph[i]) & set(graph[j])))
+            g.add_edge(i, j, weight=w * 10000)
 
     return g
 
