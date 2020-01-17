@@ -1,5 +1,3 @@
-from copy import copy
-
 from vk_auth import vk
 
 
@@ -19,7 +17,7 @@ def get_user_photo(user_id):
 
 
 def get_user_education(user_id):
-    res = vk.users.get(user_id=user_id, fields='education, universities, schools')
+    res = vk.users.get(user_id=user_id, fields='education')
     return res['photo']
 
 
@@ -27,23 +25,19 @@ def get_friends(user_id):
     return vk.friends.get(user_id=user_id)
 
 
+def get_friends_edu(user_id):
+    return vk.friends.get(user_id=user_id, fields='education')
+
+
 def get_mutual_friends(source_uid, target_uid):
     return vk.friends.getMutual(source_uid=source_uid, target_uid=target_uid)
 
 
 def get_user_graph(user_id):
-    graph = {}
-    friends = get_friends(user_id)['items']
-    friends_non_private = copy(friends)
+    friends = get_friends_edu(user_id)['items']
+    friends = list(filter(lambda f: not f['is_closed'], friends))
 
-    for friend_id in friends:
-        try:
-            graph[friend_id] = get_friends(friend_id)['items']
-        except BaseException:
-            friends_non_private.remove(friend_id)
+    for friend in friends:
+        friend['friends'] = get_friends(friend['id'])['items']
 
-    labels = dict()
-    for friend_id in friends_non_private:
-        labels[friend_id] = get_user_name(friend_id)
-
-    return graph, labels
+    return friends

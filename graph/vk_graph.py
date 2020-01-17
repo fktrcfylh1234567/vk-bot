@@ -4,27 +4,28 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 
-def make_graph(graph):
+def make_graph(friends):
     g = nx.Graph(directed=False)
 
-    for i in graph:
-        g.add_node(i)
+    for fr in friends:
+        g.add_node(fr['id'])
 
-    friends = tuple(graph.keys())
-
-    for (i, j) in itertools.combinations(range(len(graph.keys())), 2):
-        i = friends[i]
-        j = friends[j]
-        if i in graph[j]:
-            w = len(list(set(graph[i]) & set(graph[j])))
-            g.add_edge(i, j, weight=w * 10000)
+    for (i, j) in itertools.combinations(range(len(friends)), 2):
+        if friends[i]['id'] in friends[j]['friends']:
+            w = len(list(set(friends[i]['friends']) & set(friends[j]['friends'])))
+            g.add_edge(friends[i]['id'], friends[j]['id'], weight=w * 10000)
 
     return g
 
 
-def display(graph, labels):
-    g = make_graph(graph)
+def display(friends):
+    g = make_graph(friends)
     pos = nx.spring_layout(g)
+
+    labels = dict()
+
+    for user in friends:
+        labels[user['id']] = user['first_name'] + " " + user['last_name']
 
     nx.draw(g, pos=pos, node_size=30, with_labels=False, width=0.2)
     nx.draw_networkx_labels(g, pos, labels)

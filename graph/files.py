@@ -1,22 +1,13 @@
 import ast
 
 
-def read_data_from_files():
-    graph = open('graph.json', 'r').readline()
-    labels = open('names.json', 'r').read()
-
+def read_data_from_file():
+    graph = open('data.json', 'r').readline()
     graph = ast.literal_eval(graph)
-    labels = ast.literal_eval(labels)
-
-    return graph, labels
+    return graph
 
 
-def save_data_to_files(graph, labels):
-    graph_file = open('graph.json', 'w')
-    labels_file = open('names.json', 'w')
-
-    graph_file.write(str(graph))
-    labels_file.write(str(labels))
-
+def save_data_to_file(data):
+    graph_file = open('data.json', 'w')
+    graph_file.write(str(data))
     graph_file.close()
-    labels_file.close()
