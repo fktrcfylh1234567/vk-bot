@@ -13,7 +13,7 @@ def make_graph(friends):
     for (i, j) in itertools.combinations(range(len(friends)), 2):
         if friends[i]['id'] in friends[j]['friends']:
             w = len(list(set(friends[i]['friends']) & set(friends[j]['friends'])))
-            g.add_edge(friends[i]['id'], friends[j]['id'], weight=w * 10000)
+            g.add_edge(friends[i]['id'], friends[j]['id'], weight=w * 10)
 
     return g
 

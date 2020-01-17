@@ -35,7 +35,13 @@ def get_mutual_friends(source_uid, target_uid):
 
 def get_user_graph(user_id):
     friends = get_friends_edu(user_id)['items']
-    friends = list(filter(lambda f: not f['is_closed'], friends))
+    friends = list(filter(lambda f: not f['is_closed'] or f['can_access_closed'], friends))
+
+    for friend in friends:
+        del friend['is_closed']
+        del friend['can_access_closed']
+        del friend['online']
+        del friend['track_code']
 
     for friend in friends:
         friend['friends'] = get_friends(friend['id'])['items']
